@@ -1,0 +1,2558 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/users/register": {
+      "post": {
+        "operationId": "UsersController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "成功注册",
+            "content": {
+              "application/json": {
+                "example": {
+                  "access_token": "string",
+                  "user_id": 1
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "用户名或邮箱已存在",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Username already exists"
+                }
+              }
+            }
+          }
+        },
+        "summary": "用户注册",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/login": {
+      "post": {
+        "operationId": "UsersController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功登录",
+            "content": {
+              "application/json": {
+                "example": {
+                  "access_token": "string",
+                  "user_id": 1
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "密码错误",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid password",
+                  "error": "Unauthorized",
+                  "statusCode": 401
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "用户不存在",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User not found",
+                  "error": "Not found",
+                  "statusCode": 404
+                }
+              }
+            }
+          }
+        },
+        "summary": "用户登录",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/info": {
+      "get": {
+        "operationId": "UsersController_getInfo",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取用户信息",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "username": "string",
+                  "email": "string",
+                  "display_name": "string",
+                  "bio": "string",
+                  "role": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "用户不存在",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User not found",
+                  "error": "Not found",
+                  "statusCode": 404
+                }
+              }
+            }
+          }
+        },
+        "summary": "获取用户信息",
+        "tags": [
+          "users"
+        ]
+      },
+      "post": {
+        "operationId": "UsersController_updateInfo",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功更新用户信息",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "success"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无权限",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Forbidden",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "用户不存在",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User not found",
+                  "error": "Not found",
+                  "statusCode": 404
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "更新用户信息",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/all": {
+      "get": {
+        "operationId": "UsersController_getAll",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取所有用户信息",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "username": "string",
+                    "email": "string",
+                    "display_name": "string",
+                    "bio": "string",
+                    "role": "string"
+                  }
+                ]
+              }
+            }
+          },
+          "403": {
+            "description": "无权限",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Forbidden",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "获取所有用户信息",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/ban": {
+      "post": {
+        "operationId": "UsersController_ban",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功封禁用户",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "success"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无权限",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Forbidden",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "用户不存在",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User not found",
+                  "error": "Not found",
+                  "statusCode": 404
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "封禁用户",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/unban": {
+      "post": {
+        "operationId": "UsersController_unban",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功解封用户",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "success"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无权限",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Forbidden",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "用户不存在",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User not found",
+                  "error": "Not found",
+                  "statusCode": 404
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "解封用户",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/admit": {
+      "post": {
+        "operationId": "UsersController_admit",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功提升用户为管理员",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "success"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无权限",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Forbidden",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "用户不存在",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User not found",
+                  "error": "Not found",
+                  "statusCode": 404
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "提升用户为管理员",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/users/unadmit": {
+      "post": {
+        "operationId": "UsersController_unadmit",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功撤销用户管理员权限",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "success"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无权限",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Forbidden",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "用户不存在",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "User not found",
+                  "error": "Not found",
+                  "statusCode": 404
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "撤销用户管理员权限",
+        "tags": [
+          "users"
+        ]
+      }
+    },
+    "/posts/list": {
+      "get": {
+        "operationId": "PostsController_getPosts",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取帖子列表",
+            "content": {
+              "application/json": {
+                "example": {
+                  "posts": [
+                    {
+                      "id": 1,
+                      "title": "Hello World",
+                      "content": "Hello World",
+                      "authorId": 1,
+                      "categoryId": 1,
+                      "tagIds": [
+                        1
+                      ],
+                      "status": "published",
+                      "views": 0,
+                      "likes": 0,
+                      "favourites": 0,
+                      "createdAt": "2021-01-01T00:00:00",
+                      "updatedAt": "2021-01-01T00:00:00"
+                    }
+                  ],
+                  "total": 1
+                }
+              }
+            }
+          }
+        },
+        "summary": "获取帖子列表",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/detail": {
+      "get": {
+        "operationId": "PostsController_getPost",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取帖子详情",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "title": "Hello World",
+                  "content": "Hello World",
+                  "authorId": 1,
+                  "categoryId": 1,
+                  "tagIds": [
+                    1
+                  ],
+                  "status": "published",
+                  "views": 0,
+                  "likes": 0,
+                  "favourites": 0,
+                  "createdAt": "2021-01-01T00:00:00",
+                  "updatedAt": "2021-01-01T00:00:00"
+                }
+              }
+            }
+          }
+        },
+        "summary": "获取帖子详情",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/create": {
+      "post": {
+        "operationId": "PostsController_createPost",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "成功创建帖子",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "创建帖子",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/update": {
+      "put": {
+        "operationId": "PostsController_updatePost",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功更新帖子",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "更新帖子",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/delete": {
+      "delete": {
+        "operationId": "PostsController_deletePost",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功删除帖子",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "删除帖子",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/author": {
+      "get": {
+        "operationId": "PostsController_getPostsByAuthor",
+        "parameters": [
+          {
+            "name": "authorId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取作者的帖子列表",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "title": "Hello World",
+                    "content": "Hello World",
+                    "authorId": 1,
+                    "categoryId": 1,
+                    "tagIds": [
+                      1
+                    ],
+                    "status": "published",
+                    "views": 0,
+                    "likes": 0,
+                    "favourites": 0,
+                    "createdAt": "2021-01-01T00:00:00",
+                    "updatedAt": "2021-01-01T00:00:00"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "summary": "获取作者的帖子列表",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/category": {
+      "get": {
+        "operationId": "PostsController_getPostsByCategory",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取分类的帖子列表",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "title": "Hello World",
+                    "content": "Hello World",
+                    "authorId": 1,
+                    "categoryId": 1,
+                    "tagIds": [
+                      1
+                    ],
+                    "status": "published",
+                    "views": 0,
+                    "likes": 0,
+                    "favourites": 0,
+                    "createdAt": "2021-01-01T00:00:00",
+                    "updatedAt": "2021-01-01T00:00:00"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "summary": "获取分类的帖子列表",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/tag": {
+      "get": {
+        "operationId": "PostsController_likePost",
+        "parameters": [
+          {
+            "name": "postId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取标签的帖子列表",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "title": "Hello World",
+                    "content": "Hello World",
+                    "authorId": 1,
+                    "categoryId": 1,
+                    "tagIds": [
+                      1
+                    ],
+                    "status": "published",
+                    "views": 0,
+                    "likes": 0,
+                    "favourites": 0,
+                    "createdAt": "2021-01-01T00:00:00",
+                    "updatedAt": "2021-01-01T00:00:00"
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "帖子不存在",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Post not found",
+                  "error": "Not Found",
+                  "statusCode": 404
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "已经点赞过",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Already liked",
+                  "error": "Conflict",
+                  "statusCode": 409
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "获取标签的帖子列表",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/unlike": {
+      "post": {
+        "operationId": "PostsController_unlikePost",
+        "parameters": [
+          {
+            "name": "postId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功取消点赞帖子",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "未点赞过",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Not liked",
+                  "error": "Not Found",
+                  "statusCode": 404
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "取消点赞帖子",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/like": {
+      "get": {
+        "operationId": "PostsController_getLikedPosts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取点赞的帖子列表",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "title": "Hello World",
+                    "content": "Hello World",
+                    "authorId": 1,
+                    "categoryId": 1,
+                    "tagIds": [
+                      1
+                    ],
+                    "status": "published",
+                    "views": 0,
+                    "likes": 0,
+                    "favourites": 0,
+                    "createdAt": "2021-01-01T00:00:00",
+                    "updatedAt": "2021-01-01T00:00:00"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "获取点赞的帖子列表",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/pin": {
+      "put": {
+        "operationId": "PostsController_pinPost",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功置顶帖子",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无权限",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Forbidden",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "置顶帖子",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/unpin": {
+      "put": {
+        "operationId": "PostsController_unpinPost",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功取消置顶帖子",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无权限",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Forbidden",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "取消置顶帖子",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/pending": {
+      "get": {
+        "operationId": "PostsController_getPendingPosts",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取待审核的帖子列表",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "title": "Hello World",
+                    "content": "Hello World",
+                    "authorId": 1,
+                    "categoryId": 1,
+                    "tagIds": [
+                      1
+                    ],
+                    "status": "published",
+                    "views": 0,
+                    "likes": 0,
+                    "favourites": 0,
+                    "createdAt": "2021-01-01T00:00:00",
+                    "updatedAt": "2021-01-01T00:00:00"
+                  }
+                ]
+              }
+            }
+          },
+          "403": {
+            "description": "无权限",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Forbidden",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "获取待审核的帖子列表",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/approve": {
+      "put": {
+        "operationId": "PostsController_approvePost",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功审核通过帖子",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无权限",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Forbidden",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "审核通过帖子",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/posts/reject": {
+      "put": {
+        "operationId": "PostsController_rejectPost",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功审核拒绝帖子",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无权限",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Forbidden",
+                  "error": "Forbidden",
+                  "statusCode": 403
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "审核拒绝帖子",
+        "tags": [
+          "posts"
+        ]
+      }
+    },
+    "/comments/list": {
+      "get": {
+        "operationId": "CommentsController_getComments",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "postId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取评论列表",
+            "content": {
+              "application/json": {
+                "example": {
+                  "comments": [
+                    {
+                      "commentId": 1,
+                      "content": "content",
+                      "authorId": 1,
+                      "postId": 1,
+                      "parentId": 1,
+                      "parentAuthorId": 1,
+                      "likes": 1,
+                      "createdAt": "2021-08-02T00:00:00.000Z",
+                      "updatedAt": "2021-08-02T00:00:00.000Z",
+                      "replies": []
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "summary": "获取评论列表",
+        "tags": [
+          "comments"
+        ]
+      }
+    },
+    "/comments/create": {
+      "post": {
+        "operationId": "CommentsController_createComment",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功创建评论",
+            "content": {
+              "application/json": {
+                "example": {
+                  "commentId": 1,
+                  "content": "content",
+                  "authorId": 1,
+                  "postId": 1,
+                  "parentId": 1,
+                  "parentAuthorId": 1,
+                  "likes": 1,
+                  "createdAt": "2021-08-02T00:00:00.000Z",
+                  "updatedAt": "2021-08-02T00:00:00.000Z",
+                  "replies": []
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "创建评论",
+        "tags": [
+          "comments"
+        ]
+      }
+    },
+    "/comments/update": {
+      "put": {
+        "operationId": "CommentsController_updateComment",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功更新评论",
+            "content": {
+              "application/json": {
+                "example": {
+                  "commentId": 1,
+                  "content": "content",
+                  "authorId": 1,
+                  "postId": 1,
+                  "parentId": 1,
+                  "parentAuthorId": 1,
+                  "likes": 1,
+                  "createdAt": "2021-08-02T00:00:00.000Z",
+                  "updatedAt": "2021-08-02T00:00:00.000Z",
+                  "replies": []
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "更新评论",
+        "tags": [
+          "comments"
+        ]
+      }
+    },
+    "/comments/delete": {
+      "delete": {
+        "operationId": "CommentsController_deleteComment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功删除评论",
+            "content": {
+              "application/json": {
+                "example": {
+                  "commentId": 1,
+                  "content": "content",
+                  "authorId": 1,
+                  "postId": 1,
+                  "parentId": 1,
+                  "parentAuthorId": 1,
+                  "likes": 1,
+                  "createdAt": "2021-08-02T00:00:00.000Z",
+                  "updatedAt": "2021-08-02T00:00:00.000Z",
+                  "replies": []
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "删除评论",
+        "tags": [
+          "comments"
+        ]
+      }
+    },
+    "/comments/like": {
+      "post": {
+        "operationId": "CommentsController_likeComment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功点赞评论",
+            "content": {
+              "application/json": {
+                "example": {
+                  "commentId": 1,
+                  "content": "content",
+                  "authorId": 1,
+                  "postId": 1,
+                  "parentId": 1,
+                  "parentAuthorId": 1,
+                  "likes": 1,
+                  "createdAt": "2021-08-02T00:00:00.000Z",
+                  "updatedAt": "2021-08-02T00:00:00.000Z",
+                  "replies": []
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "点赞评论",
+        "tags": [
+          "comments"
+        ]
+      },
+      "get": {
+        "operationId": "CommentsController_getUserLikeComments",
+        "parameters": [
+          {
+            "name": "uerId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取用户点赞评论",
+            "content": {
+              "application/json": {
+                "example": {
+                  "comments": [
+                    {
+                      "commentId": 1,
+                      "content": "content",
+                      "authorId": 1,
+                      "postId": 1,
+                      "parentId": 1,
+                      "parentAuthorId": 1,
+                      "likes": 1,
+                      "createdAt": "2021-08-02T00:00:00.000Z",
+                      "updatedAt": "2021-08-02T00:00:00.000Z",
+                      "replies": []
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "获取用户点赞评论",
+        "tags": [
+          "comments"
+        ]
+      }
+    },
+    "/comments/unlike": {
+      "post": {
+        "operationId": "CommentsController_unlikeComment",
+        "parameters": [
+          {
+            "name": "commentId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功取消点赞评论",
+            "content": {
+              "application/json": {
+                "example": {
+                  "commentId": 1,
+                  "content": "content",
+                  "authorId": 1,
+                  "postId": 1,
+                  "parentId": 1,
+                  "parentAuthorId": 1,
+                  "likes": 1,
+                  "createdAt": "2021-08-02T00:00:00.000Z",
+                  "updatedAt": "2021-08-02T00:00:00.000Z",
+                  "replies": []
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "取消点赞评论",
+        "tags": [
+          "comments"
+        ]
+      }
+    },
+    "/comments/user": {
+      "get": {
+        "operationId": "CommentsController_getUserComments",
+        "parameters": [
+          {
+            "name": "uerId",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取用户评论",
+            "content": {
+              "application/json": {
+                "example": {
+                  "comments": [
+                    {
+                      "commentId": 1,
+                      "content": "content",
+                      "authorId": 1,
+                      "postId": 1,
+                      "parentId": 1,
+                      "parentAuthorId": 1,
+                      "likes": 1,
+                      "createdAt": "2021-08-02T00:00:00.000Z",
+                      "updatedAt": "2021-08-02T00:00:00.000Z",
+                      "replies": []
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "获取用户评论",
+        "tags": [
+          "comments"
+        ]
+      }
+    },
+    "/tags/all": {
+      "get": {
+        "operationId": "TagsController_getTags",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取所有标签",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Life",
+                    "description": "Life is Beautiful"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Tech",
+                    "description": "Tech is Wonderful"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "summary": "获取所有标签",
+        "tags": [
+          "tags"
+        ]
+      }
+    },
+    "/tags/detail": {
+      "get": {
+        "operationId": "TagsController_getTag",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取标签详情",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Life",
+                  "description": "Life is Beautiful"
+                }
+              }
+            }
+          }
+        },
+        "summary": "获取标签详情",
+        "tags": [
+          "tags"
+        ]
+      }
+    },
+    "/tags/create": {
+      "post": {
+        "operationId": "TagsController_createTag",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTagDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "成功创建标签",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "创建标签",
+        "tags": [
+          "tags"
+        ]
+      }
+    },
+    "/tags/update": {
+      "put": {
+        "operationId": "TagsController_updateTag",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponseTagDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功更新标签",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "更新标签",
+        "tags": [
+          "tags"
+        ]
+      }
+    },
+    "/tags/delete": {
+      "delete": {
+        "operationId": "TagsController_deleteTag",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功删除标签",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "删除标签",
+        "tags": [
+          "tags"
+        ]
+      }
+    },
+    "/categories/all": {
+      "get": {
+        "operationId": "CategoriesController_getCategories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取所有分区",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Life",
+                    "description": "Life is Beautiful"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Tech",
+                    "description": "Tech is Wonderful"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "summary": "获取所有分区",
+        "tags": [
+          "categories"
+        ]
+      }
+    },
+    "/categories/detail": {
+      "get": {
+        "operationId": "CategoriesController_getCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取分区详情",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Life",
+                  "description": "Life is Beautiful"
+                }
+              }
+            }
+          }
+        },
+        "summary": "获取分区详情",
+        "tags": [
+          "categories"
+        ]
+      }
+    },
+    "/categories/create": {
+      "post": {
+        "operationId": "CategoriesController_createCategory",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "成功创建分区",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "创建分区",
+        "tags": [
+          "categories"
+        ]
+      }
+    },
+    "/categories/update": {
+      "put": {
+        "operationId": "CategoriesController_updateCategory",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponseCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功更新分区",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "更新分区",
+        "tags": [
+          "categories"
+        ]
+      }
+    },
+    "/categories/delete": {
+      "delete": {
+        "operationId": "CategoriesController_deleteCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功删除分区",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "删除分区",
+        "tags": [
+          "categories"
+        ]
+      }
+    },
+    "/reports": {
+      "post": {
+        "operationId": "ReportsController_createReport",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReportDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功举报",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "举报",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/alerts": {
+      "get": {
+        "operationId": "AlertsController_getAlerts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取提醒列表",
+            "content": {
+              "application/json": {
+                "example": {
+                  "alerts": [
+                    {
+                      "alert_id": 1,
+                      "message": "string",
+                      "poster_id": 1,
+                      "alert_type": "string",
+                      "createdAt": "2021-01-01T00:00:00"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "获取提醒列表",
+        "tags": [
+          "alerts"
+        ]
+      },
+      "post": {
+        "operationId": "AlertsController_createAlert",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAlertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功创建提醒",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "创建提醒",
+        "tags": [
+          "alerts"
+        ]
+      }
+    },
+    "/alerts/read": {
+      "post": {
+        "operationId": "AlertsController_readAlert",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAlertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功标记提醒为已读",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "标记提醒为已读",
+        "tags": [
+          "alerts"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Minilily Forum API",
+    "description": "The Minilily Forum API description",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "user1",
+            "description": "用户名"
+          },
+          "email": {
+            "type": "string",
+            "example": "abc@example.com",
+            "description": "邮箱"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "description": "密码"
+          }
+        },
+        "required": [
+          "username",
+          "email",
+          "password"
+        ]
+      },
+      "LoginUserDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "user1",
+            "description": "用户名"
+          },
+          "email": {
+            "type": "string",
+            "example": "abc@example.com",
+            "description": "邮箱"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "description": "密码"
+          }
+        },
+        "required": [
+          "username",
+          "email",
+          "password"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "user1",
+            "description": "用户名"
+          },
+          "email": {
+            "type": "string",
+            "example": "abc@example.com",
+            "description": "邮箱"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "description": "密码"
+          },
+          "display_name": {
+            "type": "string",
+            "example": "username",
+            "description": "显示名称"
+          },
+          "bio": {
+            "type": "string",
+            "example": "Hello world",
+            "description": "个人简介"
+          }
+        },
+        "required": [
+          "username",
+          "email",
+          "password",
+          "display_name",
+          "bio"
+        ]
+      },
+      "CreatePostDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Hello World",
+            "description": "帖子标题"
+          },
+          "content": {
+            "type": "string",
+            "example": "Hello World",
+            "description": "帖子内容"
+          },
+          "category": {
+            "type": "string",
+            "example": "Life",
+            "description": "帖子分区"
+          },
+          "tags": {
+            "example": [
+              "NJU",
+              "Canteen"
+            ],
+            "description": "帖子标签",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "title",
+          "content",
+          "category",
+          "tags"
+        ]
+      },
+      "UpdatePostDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": "1",
+            "description": "帖子ID"
+          },
+          "title": {
+            "type": "string",
+            "example": "Hello World",
+            "description": "帖子标题"
+          },
+          "content": {
+            "type": "string",
+            "example": "Hello World",
+            "description": "帖子内容"
+          },
+          "category": {
+            "type": "string",
+            "example": "Life",
+            "description": "帖子分区"
+          },
+          "tags": {
+            "example": [
+              "NJU",
+              "Canteen"
+            ],
+            "description": "帖子标签",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "content",
+          "category",
+          "tags"
+        ]
+      },
+      "CreateCommentDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "example": "Hello World",
+            "description": "回复内容"
+          },
+          "postId": {
+            "type": "number",
+            "example": 1,
+            "description": "帖子ID"
+          },
+          "parentId": {
+            "type": "number",
+            "example": 2,
+            "description": "回复ID"
+          },
+          "atUserId": {
+            "type": "number",
+            "example": 1,
+            "description": "at用户ID"
+          }
+        },
+        "required": [
+          "content",
+          "postId",
+          "parentId",
+          "atUserId"
+        ]
+      },
+      "UpdateCommentDto": {
+        "type": "object",
+        "properties": {
+          "commentId": {
+            "type": "number",
+            "example": 1,
+            "description": "回复ID"
+          },
+          "content": {
+            "type": "string",
+            "example": "Hello World",
+            "description": "回复内容"
+          }
+        },
+        "required": [
+          "commentId",
+          "content"
+        ]
+      },
+      "CreateTagDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Life",
+            "description": "标签名称"
+          },
+          "description": {
+            "type": "string",
+            "example": "Life is Beautiful",
+            "description": "标签简介"
+          }
+        },
+        "required": [
+          "name",
+          "description"
+        ]
+      },
+      "ResponseTagDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "标签ID"
+          },
+          "name": {
+            "type": "string",
+            "example": "Life",
+            "description": "标签名称"
+          },
+          "description": {
+            "type": "string",
+            "example": "Life is Beautiful",
+            "description": "标签简介"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description"
+        ]
+      },
+      "CreateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "分区ID"
+          },
+          "name": {
+            "type": "string",
+            "example": "Life",
+            "description": "分区名称"
+          },
+          "description": {
+            "type": "string",
+            "example": "Life is Beautiful",
+            "description": "分区简介"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description"
+        ]
+      },
+      "ResponseCategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1,
+            "description": "分区ID"
+          },
+          "name": {
+            "type": "string",
+            "example": "Life",
+            "description": "分区名称"
+          },
+          "description": {
+            "type": "string",
+            "example": "Life is Beautiful",
+            "description": "分区简介"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description"
+        ]
+      },
+      "CreateReportDto": {
+        "type": "object",
+        "properties": {
+          "reporter": {
+            "type": "number",
+            "example": 1,
+            "description": "举报人ID"
+          },
+          "type": {
+            "type": "string",
+            "example": "Post",
+            "description": "举报类型"
+          },
+          "reportedItemId": {
+            "type": "number",
+            "example": 1,
+            "description": "举报对象ID"
+          },
+          "reason": {
+            "type": "string",
+            "example": "This is a spam post",
+            "description": "举报原因"
+          }
+        },
+        "required": [
+          "reporter",
+          "type",
+          "reportedItemId",
+          "reason"
+        ]
+      },
+      "CreateAlertDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Post",
+            "description": "Alert type"
+          },
+          "receiver_id": {
+            "type": "number",
+            "example": 1,
+            "description": "Receiver ID"
+          }
+        },
+        "required": [
+          "message",
+          "receiver_id"
+        ]
+      }
+    }
+  }
+}
